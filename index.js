@@ -8,9 +8,9 @@ const fs = require('fs')
 
 
 app.use(express.json());
-app.use(express.urlencoded({extended : false}));
-app.use(express.static(path.join(__dirname,'public')));
-app.use(bodyParser.json({limit : "50mb"}))
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json({ limit: "50mb" }))
 
 
 
@@ -19,29 +19,29 @@ config.dbConnection()
 
 //..........routes
 const route = require('./routes/post.route');
-app.use('/api/v1/',route)
+app.use('/api/v1/', route)
 
 //.................create Server..................
-let server 
+let server
 if (config.protocol == "https") {
     const https = require('https')
     const options = {
-        key : fs.readFileSync(config.sslCertificates.privkey),
-        cert : fs.readFileSync(config.sslCertificates.fullchain)
+        key: fs.readFileSync(config.sslCertificates.privkey),
+        cert: fs.readFileSync(config.sslCertificates.fullchain)
     }
-    server = https.createServer(options,app)
+    server = https.createServer(options, app)
 } else {
     const http = require('http')
     server = http.createServer(app)
 }
 
-app.get('/',(req,res)=>{
+app.get('/', (req, res) => {
     res.send("welcome")
 })
 
 const port = process.env.PORT || 3000;
 
-server.listen(port,()=>{
+server.listen(port, () => {
     console.log(`server running on port ${port}`);
 })
 
